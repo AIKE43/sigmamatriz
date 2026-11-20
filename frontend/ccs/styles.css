@@ -6,15 +6,15 @@
 }
 
 :root {
-    --primary: #00d9ff;     /* Turquesa brillante */
-    --secondary: #0a4d5c;   /* Turquesa oscuro profundo */
-    --success: #00e5cc;     /* Turquesa verde brillante */
-    --danger: #ff6b6b;      /* Rojo coral suave */
-    --warning: #ffd93d;     /* Amarillo dorado brillante */
-    --dark: #041e24;        /* Casi negro con tinte turquesa */
-    --light: #e0ffff;       /* Cian muy claro */
-    --card-bg: #0d3d47;     /* Turquesa oscuro para cards */
-    --text: #e0ffff;        /* Texto claro turquesa */
+    --primary: #56B4E9;     /* Celeste (Okabe-Ito) */
+    --secondary: #0072B2;   /* Azul profundo (Okabe-Ito) */
+    --success: #4DD9AC;     /* Verde menta, legible sobre fondo oscuro */
+    --danger: #FF8A7A;      /* Coral claro para errores */
+    --warning: #F0C34A;     /* Amarillo ámbar */
+    --dark: #0B1A2E;        /* Azul marino casi negro */
+    --light: #EEF4FB;       /* Blanco azulado */
+    --card-bg: #142A45;     /* Azul marino para cards */
+    --text: #EEF4FB;        /* Texto claro */
 }
 
 body {
@@ -129,17 +129,17 @@ h1 {
 }
 
 .option.selected {
-    background: rgba(0, 217, 255, 0.3);
+    background: rgba(86, 180, 233, 0.3);
     border: 2px solid var(--primary);
 }
 
 .option.correct {
-    background: rgba(0, 229, 204, 0.3);
+    background: rgba(77, 217, 172, 0.3);
     border: 2px solid var(--success);
 }
 
 .option.incorrect {
-    background: rgba(255, 107, 107, 0.3);
+    background: rgba(255, 138, 122, 0.3);
     border: 2px solid var(--danger);
 }
 
@@ -250,17 +250,17 @@ h1 {
 
 .btn-primary {
     background-color: var(--primary);
-    color: #041e24;
+    color: #0B1A2E;
 }
 
 .btn-success {
     background-color: var(--success);
-    color: #041e24;
+    color: #0B1A2E;
 }
 
 .btn-warning {
     background-color: var(--warning);
-    color: #041e24;
+    color: #0B1A2E;
 }
 
 .btn:hover {
@@ -269,7 +269,7 @@ h1 {
 }
 
 .ai-suggestion {
-    background: rgba(0, 217, 255, 0.1);
+    background: rgba(86, 180, 233, 0.1);
     border-left: 4px solid var(--primary);
     padding: 15px;
     border-radius: 0 8px 8px 0;
@@ -364,13 +364,13 @@ h1 {
     font-weight: bold;
     cursor: pointer;
     background-color: var(--primary);
-    color: #041e24;
+    color: #0B1A2E;
     transition: all 0.3s ease;
 }
 
 #nameForm button[type="submit"]:hover {
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 217, 255, 0.4);
+    box-shadow: 0 5px 15px rgba(86, 180, 233, 0.4);
 }
 
 body > h1 {
