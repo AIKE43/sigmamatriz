@@ -174,7 +174,7 @@ function confirmar() {
         titulo.style.color = '#e74c3c';
     }
     explicacion.textContent = pregunta.explicacion;
-    detalle.textContent = `La clave es la alternativa ${pregunta.correcta}. Peso de la pregunta: ${pesos[indice]}.`;
+    detalle.textContent = `La clave es la alternativa ${pregunta.correcta}. Puntaje de la pregunta: ${pesos[indice]}.`;
 
     confirmarBtn.style.display = 'none';
     siguienteBtn.classList.remove('oculto');
