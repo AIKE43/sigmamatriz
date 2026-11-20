@@ -50,6 +50,10 @@ h1 {
     opacity: 0.8;
 }
 
+h1 i {
+    margin-right: 14px;
+}
+
 .stats-container {
     display: flex;
     justify-content: space-between;
