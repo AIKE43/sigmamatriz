@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 156" width="248" height="156">
+<title>Matriz A 2x2</title>
+<rect width="248" height="156" fill="#FFFFFF" rx="10"/>
+<text x="5" y="88" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="#0B1A2E">A =</text>
+<path d="M 70.0 20.0 Q 56.0 78.0 70.0 136.0" fill="none" stroke="#0B1A2E" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M 238.0 20.0 Q 252.0 78.0 238.0 136.0" fill="none" stroke="#0B1A2E" stroke-width="3.5" stroke-linecap="round"/>
+<text x="125.0" y="59.0" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="#0B1A2E">1</text>
+<text x="183.0" y="59.0" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="#0B1A2E">2</text>
+<text x="125.0" y="117.0" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="#0B1A2E">3</text>
+<text x="183.0" y="117.0" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="#0B1A2E">4</text>
+</svg>
