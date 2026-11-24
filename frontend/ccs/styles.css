@@ -418,3 +418,11 @@ body > p {
     pointer-events: none;
     opacity: 0.6;
 }
+
+/* Resumen de resultados: aciertos, errores y notación vectorial */
+.lista-resultados { list-style: none; padding: 0; margin: 0.8rem 0; }
+.lista-resultados li { padding: 0.4rem 0.8rem; margin-bottom: 0.4rem; border-radius: 8px; font-weight: 600; }
+.lista-resultados li.acierto { background: rgba(77, 217, 172, 0.18); color: var(--success); }
+.lista-resultados li.error { background: rgba(255, 138, 122, 0.18); color: var(--danger); }
+.notacion { margin-top: 0.8rem; }
+.notacion summary { cursor: pointer; font-weight: 600; color: var(--primary); }
