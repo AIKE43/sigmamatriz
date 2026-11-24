@@ -14,8 +14,9 @@ const PESOS = [100, 100, 150, 150, 200];
 const BANCO = [
     { enunciado: 'Calcula Σ (k = 1 hasta 4) k', alternativas: ['6', '10', '8', '12'], correcta: 2,
       explicacion: '1 + 2 + 3 + 4 = 10. La sumatoria suma los términos desde el límite inferior hasta el superior.' },
-    { enunciado: 'Si A = [[1, 2], [3, 4]], ¿cuál es el elemento a₂₁?', alternativas: ['1', '2', '3', '4'], correcta: 3,
-      explicacion: 'a₂₁ está en la fila 2 y la columna 1 de A, y ese valor es 3.' },
+    { enunciado: 'Si A es la matriz de la imagen, ¿cuál es el elemento a₂₁?', alternativas: ['1', '2', '3', '4'], correcta: 3,
+      explicacion: 'a₂₁ está en la fila 2 y la columna 1 de A, y ese valor es 3.',
+      imagen: '/imagenes/matriz_A_2x2.svg', imagen_alt: 'Matriz A de 2 filas y 2 columnas: primera fila 1, 2; segunda fila 3, 4.' },
     { enunciado: 'En el plano se muestran los vectores A y B. Si R es el vector que resulta de la diferencia de B con A (B − A), ¿qué características tiene R?',
       alternativas: ['|R| = 1 u, dirigido al sur-este', '|R| = 7,07 u, dirigido al norte levemente al oeste', '|R| = 8 u, dirigido al sur-oeste', '|R| = 7,07 u, dirigido al sur levemente al este'], correcta: 4,
       explicacion: 'R = B − A = (−2 − (−3), −4 − 3) = (1, −7). |R| = √(1² + 7²) = √50 ≈ 7,07 u. Apunta hacia abajo (sur) con una pequeña componente hacia la derecha (este).',
@@ -36,12 +37,14 @@ const BANCO = [
       explicacion: '2 + 4 + 6 + 8 + 10 = 30.' },
     { enunciado: 'El producto punto de (1, 2) · (3, 4) es:', alternativas: ['10', '11', '14', '8'], correcta: 2,
       explicacion: '1·3 + 2·4 = 3 + 8 = 11. Se multiplican las componentes correspondientes y se suman.' },
-    { enunciado: '¿Cuál es la dimensión de la matriz [[1, 2, 3], [4, 5, 6]]?', alternativas: ['2 × 2', '3 × 2', '2 × 3', '3 × 3'], correcta: 3,
-      explicacion: '2 filas y 3 columnas: dimensión 2 × 3 (filas × columnas).' },
+    { enunciado: '¿Cuál es la dimensión de la matriz de la imagen?', alternativas: ['2 × 2', '3 × 2', '2 × 3', '3 × 3'], correcta: 3,
+      explicacion: '2 filas y 3 columnas: dimensión 2 × 3 (filas × columnas).',
+      imagen: '/imagenes/matriz_2x3.svg', imagen_alt: 'Matriz de 2 filas y 3 columnas: primera fila 1, 2, 3; segunda fila 4, 5, 6.' },
     { enunciado: 'Calcula la magnitud del vector v = (3, 4)', alternativas: ['5', '7', '12', '25'], correcta: 1,
       explicacion: '√(3² + 4²) = √25 = 5.' },
-    { enunciado: 'Suma A = [[1, 2], [3, 4]] + B = [[2, 1], [0, 5]]. ¿Cuál es el elemento (2, 2) de A + B?', alternativas: ['7', '8', '9', '10'], correcta: 3,
-      explicacion: '4 + 5 = 9. La suma de matrices se hace elemento a elemento.' },
+    { enunciado: 'Observa las matrices A y B de la imagen. ¿Cuál es el elemento (2, 2) de A + B?', alternativas: ['7', '8', '9', '10'], correcta: 3,
+      explicacion: '4 + 5 = 9. La suma de matrices se hace elemento a elemento.',
+      imagen: '/imagenes/matrices_A_B.svg', imagen_alt: 'Matriz A: primera fila 1, 2; segunda fila 3, 4. Matriz B: primera fila 2, 1; segunda fila 0, 5.' },
     { enunciado: 'Encuentra el término a₅ de la sucesión aₙ = 3n + 1', alternativas: ['14', '15', '16', '18'], correcta: 3,
       explicacion: 'a₅ = 3(5) + 1 = 16.' },
     { enunciado: 'Calcula Σ (n = 1 hasta 4) n²', alternativas: ['30', '25', '20', '35'], correcta: 1,
@@ -52,6 +55,13 @@ const BANCO = [
 
 // Pistas por pregunta, en el mismo orden que BANCO. Una pista orienta el procedimiento
 // sin revelar la alternativa correcta y no resta puntaje.
+// Enunciados que cambiaron: nuevo -> anterior. Permite renombrar la fila existente en bases ya creadas.
+const ANTERIORES = {
+    'Si A es la matriz de la imagen, ¿cuál es el elemento a₂₁?': 'Si A = [[1, 2], [3, 4]], ¿cuál es el elemento a₂₁?',
+    '¿Cuál es la dimensión de la matriz de la imagen?': '¿Cuál es la dimensión de la matriz [[1, 2, 3], [4, 5, 6]]?',
+    'Observa las matrices A y B de la imagen. ¿Cuál es el elemento (2, 2) de A + B?': 'Suma A = [[1, 2], [3, 4]] + B = [[2, 1], [0, 5]]. ¿Cuál es el elemento (2, 2) de A + B?'
+};
+
 const PISTAS = [
     'Reemplaza k por 1, 2, 3 y 4, y suma esos cuatro números.',
     'El primer subíndice indica la fila y el segundo la columna. Busca la fila 2 y luego la columna 1.',
@@ -67,6 +77,15 @@ const PISTAS = [
     'Reemplaza n por 5 en la fórmula 3n + 1.',
     'Eleva cada n al cuadrado (1², 2², 3², 4²) y suma los resultados.',
     'Para cada k de 1 a 3, calcula k + 1 y suma esos tres valores.'
+];
+
+// Tema de cada pregunta de BANCO (mismo orden). Los cuatro temas son los de la Unidad 4
+// del documento: Sucesiones, Sumatorias, Vectores y Matrices. Cada partida incluye al menos una de cada uno.
+const TEMAS = [
+    'Sumatorias', 'Matrices', 'Vectores', 'Vectores',
+    'Sucesiones', 'Matrices', 'Sumatorias', 'Vectores',
+    'Matrices', 'Vectores', 'Matrices', 'Sucesiones',
+    'Sumatorias', 'Sumatorias'
 ];
 
 // Helpers con promesas para usar async/await
@@ -112,6 +131,9 @@ async function init() {
     if (!columnas.some((c) => c.name === 'pista')) {
         await run('ALTER TABLE preguntas ADD COLUMN pista TEXT');
     }
+    if (!columnas.some((c) => c.name === 'tema')) {
+        await run('ALTER TABLE preguntas ADD COLUMN tema TEXT');
+    }
 
     await run(`CREATE TABLE IF NOT EXISTS jugadores (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -129,6 +151,10 @@ async function init() {
         puntaje INTEGER NOT NULL,
         creado TEXT DEFAULT CURRENT_TIMESTAMP
     )`);
+
+    for (const [nuevo, anterior] of Object.entries(ANTERIORES)) {
+        await run('UPDATE preguntas SET enunciado = ? WHERE enunciado = ?', [nuevo, anterior]);
+    }
 
     // Inserta solo las preguntas que aún no existen (así también agrega las nuevas en bases ya creadas)
     let nuevas = 0;
@@ -150,6 +176,12 @@ async function init() {
     for (let i = 0; i < BANCO.length; i++) {
         await run('UPDATE preguntas SET pista = ? WHERE enunciado = ? AND pista IS NULL',
             [PISTAS[i], BANCO[i].enunciado]);
+        await run('UPDATE preguntas SET tema = ? WHERE enunciado = ?',
+            [TEMAS[i], BANCO[i].enunciado]);
+        if (BANCO[i].imagen) {
+            await run('UPDATE preguntas SET imagen = ?, imagen_alt = ? WHERE enunciado = ?',
+                [BANCO[i].imagen, BANCO[i].imagen_alt, BANCO[i].enunciado]);
+        }
     }
 }
 
