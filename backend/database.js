@@ -50,6 +50,25 @@ const BANCO = [
       explicacion: '(1 + 1) + (2 + 1) + (3 + 1) = 2 + 3 + 4 = 9.' }
 ];
 
+// Pistas por pregunta, en el mismo orden que BANCO. Una pista orienta el procedimiento
+// sin revelar la alternativa correcta y no resta puntaje.
+const PISTAS = [
+    'Reemplaza k por 1, 2, 3 y 4, y suma esos cuatro números.',
+    'El primer subíndice indica la fila y el segundo la columna. Busca la fila 2 y luego la columna 1.',
+    'R = B − A se calcula restando componente a componente. Luego usa √(x² + y²) para el largo.',
+    'Suma las componentes de u y v por separado. Después calcula el largo del vector resultante.',
+    'Primero calcula cada término con aₙ = 2n y luego súmalos.',
+    'Busca la fila 2 y cuenta tres columnas desde la izquierda.',
+    'Calcula 2k para k = 1 hasta 5 y suma los cinco resultados.',
+    'Multiplica la primera componente con la primera, la segunda con la segunda, y suma ambos productos.',
+    'Cuenta primero las filas (horizontales) y luego las columnas (verticales). Se escribe filas × columnas.',
+    'Usa √(x² + y²) con x = 3 e y = 4.',
+    'Suma solo los elementos de la fila 2, columna 2 de cada matriz.',
+    'Reemplaza n por 5 en la fórmula 3n + 1.',
+    'Eleva cada n al cuadrado (1², 2², 3², 4²) y suma los resultados.',
+    'Para cada k de 1 a 3, calcula k + 1 y suma esos tres valores.'
+];
+
 // Helpers con promesas para usar async/await
 function run(sql, params = []) {
     return new Promise((resolve, reject) => {
@@ -80,14 +99,18 @@ async function init() {
         correcta INTEGER NOT NULL,
         explicacion TEXT NOT NULL,
         imagen TEXT,
-        imagen_alt TEXT
+        imagen_alt TEXT,
+        pista TEXT
     )`);
 
-    // Migración: bases creadas antes de agregar imágenes
+    // Migración: bases creadas antes de agregar imágenes o pistas
     const columnas = await all('PRAGMA table_info(preguntas)');
     if (!columnas.some((c) => c.name === 'imagen')) {
         await run('ALTER TABLE preguntas ADD COLUMN imagen TEXT');
         await run('ALTER TABLE preguntas ADD COLUMN imagen_alt TEXT');
+    }
+    if (!columnas.some((c) => c.name === 'pista')) {
+        await run('ALTER TABLE preguntas ADD COLUMN pista TEXT');
     }
 
     await run(`CREATE TABLE IF NOT EXISTS jugadores (
@@ -121,6 +144,12 @@ async function init() {
     }
     if (nuevas > 0) {
         console.log(`Preguntas agregadas al banco: ${nuevas}.`);
+    }
+
+    // Completa la pista de las preguntas que aún no la tienen (también en bases ya creadas)
+    for (let i = 0; i < BANCO.length; i++) {
+        await run('UPDATE preguntas SET pista = ? WHERE enunciado = ? AND pista IS NULL',
+            [PISTAS[i], BANCO[i].enunciado]);
     }
 }
 
