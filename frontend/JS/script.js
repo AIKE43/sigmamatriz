@@ -50,14 +50,27 @@ function notificar(mensaje, esCorrecta) {
     }, 2500);
 }
 
-// Elige n preguntas distintas al azar (mezcla y toma las primeras n)
-function elegirPartida() {
-    const mezcladas = [...banco];
-    for (let i = mezcladas.length - 1; i > 0; i--) {
+// Mezcla un arreglo (Fisher-Yates)
+function mezclar(arreglo) {
+    const copia = [...arreglo];
+    for (let i = copia.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [mezcladas[i], mezcladas[j]] = [mezcladas[j], mezcladas[i]];
+        [copia[i], copia[j]] = [copia[j], copia[i]];
     }
-    return mezcladas.slice(0, N_PREGUNTAS);
+    return copia;
+}
+
+// Elige N_PREGUNTAS preguntas: una de cada tema de la Unidad 4 y la quinta al azar (sin repetir Matrices)
+function elegirPartida() {
+    const temas = [...new Set(banco.map((p) => p.tema))];
+    const elegidas = temas.map((tema) => {
+        const del_tema = mezclar(banco.filter((p) => p.tema === tema));
+        return del_tema[0];
+    });
+    // La quinta pregunta nunca es de Matrices: así el tema aparece una sola vez por partida
+    const restantes = mezclar(banco.filter((p) => !elegidas.includes(p) && p.tema !== 'Matrices'));
+    const relleno = restantes.slice(0, Math.max(0, N_PREGUNTAS - elegidas.length));
+    return mezclar([...elegidas, ...relleno]).slice(0, N_PREGUNTAS);
 }
 
 // Reinicia todo el estado para una nueva partida
@@ -84,13 +97,43 @@ function actualizarMarcador() {
     progressBar.style.width = `${porcentaje}%`;
 }
 
+// Dibuja las matrices escritas como [[a, b], [c, d]] con sus números alineados en filas y columnas
+function mostrarEnunciado(texto) {
+    enunciado.textContent = '';
+    const patron = /\[\[[^\]]*\](?:\s*,\s*\[[^\]]*\])*\]/g;
+    let ultimo = 0;
+    for (const m of texto.matchAll(patron)) {
+        enunciado.append(texto.slice(ultimo, m.index));
+        enunciado.append(crearMatriz(m[0]));
+        ultimo = m.index + m[0].length;
+    }
+    enunciado.append(texto.slice(ultimo));
+}
+
+// Crea un elemento visual de matriz a partir de un texto como [[1, 2], [3, 4]]
+function crearMatriz(texto) {
+    const filas = [...texto.matchAll(/\[([^\[\]]*)\]/g)].map((f) => f[1].split(',').map((v) => v.trim()));
+    const matriz = document.createElement('div');
+    matriz.className = 'matriz';
+    const celdas = document.createElement('div');
+    celdas.className = 'matriz-celdas';
+    celdas.style.setProperty('--cols', filas[0].length);
+    filas.forEach((fila) => fila.forEach((valor) => {
+        const celda = document.createElement('span');
+        celda.textContent = valor;
+        celdas.appendChild(celda);
+    }));
+    matriz.appendChild(celdas);
+    return matriz;
+}
+
 // Muestra la pregunta actual con sus cuatro alternativas
 function mostrarPregunta() {
     const pregunta = partida[indice];
     seleccion = null;
     confirmada = false;
 
-    enunciado.textContent = pregunta.enunciado;
+    mostrarEnunciado(pregunta.enunciado);
 
     // Pista: se oculta al cambiar de pregunta y no afecta el puntaje
     pistaEl.classList.add('oculto');
