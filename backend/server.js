@@ -24,7 +24,7 @@ const ruta = (fn) => (req, res) => fn(req, res).catch((err) => {
 // GET /preguntas -> banco completo (el frontend lo usa para armar la partida y mostrar retroalimentación)
 app.get('/preguntas', ruta(async (req, res) => {
     await listo;
-    const filas = await all('SELECT id, enunciado, alternativas, correcta, explicacion, imagen, imagen_alt FROM preguntas ORDER BY id');
+    const filas = await all('SELECT id, enunciado, alternativas, correcta, explicacion, imagen, imagen_alt, pista FROM preguntas ORDER BY id');
     const preguntas = filas.map((p) => ({ ...p, alternativas: JSON.parse(p.alternativas) }));
     res.json({ preguntas, pesos: PESOS });
 }));
