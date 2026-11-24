@@ -38,6 +38,8 @@ const jugarOtraBtn = document.getElementById('jugar-otra');
 const controles = document.getElementById('controles');
 const notificacion = document.getElementById('notificacion');
 const notificacionTexto = document.getElementById('notificacion-texto');
+const pistaBtn = document.getElementById('btn-pista');
+const pistaEl = document.getElementById('pista');
 
 // Notificación temporal
 function notificar(mensaje, esCorrecta) {
@@ -89,6 +91,11 @@ function mostrarPregunta() {
     confirmada = false;
 
     enunciado.textContent = pregunta.enunciado;
+
+    // Pista: se oculta al cambiar de pregunta y no afecta el puntaje
+    pistaEl.classList.add('oculto');
+    pistaEl.textContent = '';
+    pistaBtn.style.display = pregunta.pista ? '' : 'none';
 
     // Imagen de la pregunta (si tiene)
     figura.innerHTML = '';
@@ -221,8 +228,30 @@ async function finalizarPartida() {
     }
 }
 
-// Tabla con los vectores r, k, c, w y el acumulado S
+// Resumen: puntaje final y lista de aciertos y errores
 function mostrarResultado(datos) {
+    const mejora = datos.mejora === null
+        ? 'Primera partida registrada.'
+        : `Comparado con tu intento anterior: ${datos.mejora >= 0 ? '+' : ''}${datos.mejora} puntos.`;
+
+    const lista = datos.c.map((ci, i) => `
+        <li class="${ci === 1 ? 'acierto' : 'error'}">
+            Pregunta ${i + 1}: ${ci === 1 ? 'acertaste' : 'fallaste'}
+        </li>`).join('');
+
+    detalleResultado.innerHTML = `
+        <p><strong>Puntaje final: ${datos.P}</strong> (${datos.correctas} de ${N_PREGUNTAS} correctas)</p>
+        <p>${mejora}</p>
+        <p>Mejor puntaje registrado: <strong>${datos.mejor_puntaje}</strong></p>
+        <ul class="lista-resultados">${lista}</ul>
+        <details class="notacion">
+            <summary>Ver notación vectorial</summary>
+            ${notacionVectorial(datos)}
+        </details>`;
+}
+
+// Notación vectorial completa: vectores r, k, c, w y la tabla con el acumulado S
+function notacionVectorial(datos) {
     const vec = (v) => `(${v.join(', ')})`;
     const mejora = datos.mejora === null
         ? 'Primera partida registrada.'
@@ -238,7 +267,7 @@ function mostrarResultado(datos) {
             <td>${datos.S[i]}</td>
         </tr>`).join('');
 
-    detalleResultado.innerHTML = `
+    return `
         <p class="vector"><strong>r</strong> = ${vec(datos.r)} (tus alternativas)</p>
         <p class="vector"><strong>k</strong> = ${vec(datos.k)} (clave)</p>
         <p class="vector"><strong>c</strong> = ${vec(datos.c)} (1 = acierto, 0 = error)</p>
@@ -272,6 +301,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     confirmarBtn.addEventListener('click', confirmar);
     siguienteBtn.addEventListener('click', siguiente);
+    pistaBtn.addEventListener('click', () => {
+        pistaEl.textContent = `Pista: ${partida[indice].pista}`;
+        pistaEl.classList.remove('oculto');
+    });
     jugarOtraBtn.addEventListener('click', () => {
         siguienteBtn.disabled = false;
         iniciarPartida();
